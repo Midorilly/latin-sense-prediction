@@ -1,0 +1,10 @@
+ipykernel
+pandas
+jsonlines
+SPARQLWrapper
+nltk
+py4j
+neo4j
+python-dotenv
+termcolor
+rdflib
