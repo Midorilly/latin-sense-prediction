@@ -18,9 +18,9 @@ from urllib.parse import quote
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-lkgDataset = '../graphbrain//data/full-dataset-v3.jsonl'
-wikidataMap = '../graphbrain/data/wikidata_metadata/'
-languagesFolder = '../graphbrain/data/languages/'
+lkgDataset = '../data/full-dataset-v3.jsonl'
+wikidataMap = '../data/wikidata_metadata/'
+languagesFolder = '../data/languages/'
 
 def languageNodes():
     l = Graph()
@@ -170,7 +170,7 @@ def lkgNodes():
     
     schema.createSchemaNodes()
     nodes.addTaxonomyNode()
-    nodes.addPoSTagNode() # si può raffinare
+    nodes.addPoSTagNode() 
     languageNodes()
     lemmaNodes()
     entryNodes()
@@ -182,14 +182,8 @@ def lkgNodes():
     authorNodes()
     occupationNodes()
 
-etymFolder = '../knowledge-graph/data/etymwn' 
-lexvoFolder = '../knowledge-graph/data/lexvo'
-etymwnGraph = '../knowledge-graph/data/llkg/etymwn-llkg.ttl'
-latiniseGraph = '../knowledge-graph/data/llkg/etymwn-latinise-llkg.ttl' # da rigenerare
-llkgGraph = '../knowledge-graph/data/llkg/llkg-cr.ttl'
-finalGraph = '../knowledge-graph/data/llkg/final-llkg-cr.ttl'
-
 testFile = 'data/graphrag/test_latin_wsd_binary.jsonl'
+
 def removeTestInstances():
     removed = 0
     with jsonlines.open(testFile, 'r') as test:
@@ -198,17 +192,14 @@ def removeTestInstances():
             sense = line['sense']
             lemma = line['lemma']
             relations.dropBinaryProperty(quotation, sense, lemma)
-            #removed = removed+x
-    
-    #print(f'Removed {removed} grades')
 
 if __name__ == '__main__':
 
     importlib.reload(nodes)
     importlib.reload(relations)
 
-    #lkgNodes()
-    #lkgRelations()
+    lkgNodes()
+    lkgRelations()
     removeTestInstances()
   
     
