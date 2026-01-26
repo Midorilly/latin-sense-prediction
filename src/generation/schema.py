@@ -1,16 +1,3 @@
-from urllib.parse import quote
-import urllib.error
-#import nltk
-#nltk.download('wordnet')
-#nltk.download('wordnet31')
-#from nltk.corpus import wordnet as wn30
-#from nltk.corpus import wordnet31 as wn31
-import re
-#from namespaces import *
-import logging
-from SPARQLWrapper import SPARQLExceptions
-#import relations
-import hashlib
 from utils import *
 from driver import *
 
@@ -19,7 +6,6 @@ neo4jdriver = init_driver()
 
 def createSchemaNodes():
 
-    # volendo si può inserire un attributo che spieghi il nodo (description)
     hierarchy = neo4jdriver.driver.execute_query("""
         CREATE (InflectedWord:Entity {name: 'InflectedWord'})
         CREATE (Lemma:Entity {name: 'Lemma'})
