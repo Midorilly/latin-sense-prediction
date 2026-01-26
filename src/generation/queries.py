@@ -1,6 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON, SPARQLExceptions
 from rdflib import Graph
-from namespaces import *
+from namespaces import WIKIENTITY, WIKIPROP, SKOS04, BIGDATA, WIKIBASE
 import rdflib.query
 import urllib.error
 import time
@@ -9,59 +9,14 @@ import socket
 
 q = Graph()
 
-q.bind("ontolex", ONTOLEX)
-q.bind("lila", LILA)
-q.bind("skos", SKOS04)
 q.bind("wd", WIKIENTITY)
 q.bind("wdt", WIKIPROP)
-q.bind("wikibase", WIKIBASE)
+q.bind("skos", SKOS04)
 q.bind("bd", BIGDATA)
-
-q.bind("llkg", LLKG)
+q.bind("wikibase", WIKIBASE)
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-lemmaQuery = (""" SELECT ?lemma 
-    WHERE {
-        SERVICE <https://lila-erc.eu/sparql/lila_knowledge_base/sparql> {
-            ?lemma ontolex:writtenRep ?written ;
-            lila:hasPOS ?pos .             
-        }
-    }""")
-
-wdlexemeQuery = ("""SELECT ?lexeme
-    WHERE {{
-    ?lexeme a ontolex:LexicalEntry ;
-        wdt:P11033 ?lila .
-    FILTER(regex(?lila,"{}"))
-    SERVICE wikibase:label {{ bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }}
-    }}""")
-
-senseQuery = '''SELECT ?senseURI
-    WHERE {{ SERVICE <https://lila-erc.eu/sparql/lila_knowledge_base/sparql> {{ 
-            ?resource lime:entry ?lexentry.
-            ?lexentry ontolex:canonicalForm ?lemmaURI ;
-                ontolex:sense ?senseURI .
-            FILTER(regex(?senseURI,"{}")).	         
-        }}
-    }}'''
-
-documentQuery = '''SELECT ?documentURI ?languageISO
-    WHERE {{
-        BIND (wd:{} AS ?authorURI)
-        ?documentURI wdt:P50 ?authorURI .
-        ?authorURI wdt:P6886 ?language.
-        ?language wdt:P220 ?languageISO .
-        {{ ?documentURI skos:altLabel ?label ;
-            wdt:P407 ?language }}
-        UNION
-        {{ ?documentURI rdfs:label ?label ;
-            wdt:P407 ?language }} 
-    FILTER (regex(str(?label), "{}", "i"))
-    SERVICE wikibase:label {{ bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }}
-    }} LIMIT 1
-'''
 
 authorQuery = '''SELECT ?authorURI 
     WHERE {{
