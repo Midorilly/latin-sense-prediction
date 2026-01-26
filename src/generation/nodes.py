@@ -10,11 +10,10 @@ from nltk.corpus import wordnet31 as wn31
 import re
 import logging
 from SPARQLWrapper import SPARQLExceptions
-#import relations
 import hashlib
 from utils import *
 from driver import *
-from namespaces import *
+from namespaces import LILA, LEXINFO, SKOS08, LVONT
 from relations import *
 import queries
 
@@ -23,10 +22,6 @@ logger = logging.getLogger(__name__)
 
 load_environment()
 neo4jdriver = init_driver()
-
-def count():
-    global links
-    links += 1
 
 lilaPosMapping = {'N' : LILA.noun, 'ADJ' : LILA.adjective, 'V' : LILA.verb}
 lexinfoPosMapping = {'N' : LEXINFO.noun , 'ADJ' : LEXINFO.adjective, 'V' : LEXINFO.verb}
@@ -179,7 +174,6 @@ def addOccupationNode(occupation, id, dict):
 
     addIsA(entity='Occupation', gbID=id)
 
-#example node?
 def addQuotationNode(quotation: str, language: str, id, start=None, end=None):
     text = f'quotation_{id}'
 
@@ -261,6 +255,4 @@ def addTimePointNode(pointsDict):
         insertion = neo4jdriver.driver.execute_query(query).summary
         addIsA(entity='TimePoint', gbID=ids)
 
-if __name__ == '__main__':
-
-    addTaxonomyNode()
+    
