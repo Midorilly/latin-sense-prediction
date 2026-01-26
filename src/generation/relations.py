@@ -78,9 +78,6 @@ def addSenseRelation(subjID, objID):
     '''    
     insertion = neo4jdriver.driver.execute_query(query).summary
 
-# relazione da droppare per istanze di test
-# droppare relazione o droppare solo label? LABEL
-# TO DO AGGIUNGERE LABEL BINARIA YES/NO SE GRADE È MAGGIORE O MINORE FATTO
 def addExampleDescribesRelation(subjID, objID, role, grade): 
 
     if grade >= 3.0: binary = 'yes'
@@ -138,8 +135,6 @@ def dropBinaryProperty(quotation, gloss, lemma):
     elif y>1:
         print(f'{y} / {quotationHash} / {senseID}')
 
-
-#manca nello schema
 def addSameAsRelation(subjID, objID):
 
     query = f'''
@@ -261,7 +256,7 @@ def addHasPosTag(subjID, tag):
     '''
     insertion = neo4jdriver.driver.execute_query(query).summary
 
-# query a link esterni
+# to external links
 def addSeeAlso(subjID, objID):
 
     query = f'''
@@ -282,39 +277,3 @@ def addUsedInRelation(nameEnglish, objID, objEntity):
         RETURN *
     '''
     insertion = neo4jdriver.driver.execute_query(query).summary
-
-
-if __name__ == '__main__':
-
-    quotationHash = utils.cleanQuotation("quippe semper inimica [TARGET]virtutibus[/TARGET] vitia sunt et optimi quique ab improbis quasi exprobrantes aspiciuntur.")
-    gloss = utils.cleanGloss("related to \"manliness, courage, virtue, strength\"")
-    lemma = 'virtus'
-
-    query = f'''
-        MATCH (l:Lemma) WHERE l.name = '{lemma}'
-        RETURN l.gbID LIMIT 1
-    '''
-    records, _, _ = neo4jdriver.driver.execute_query(query)
-    lemmaID = records[0].data()['l.gbID']
-
-    query = f'''
-        MATCH (s:Sense) WHERE s.gloss = '{gloss}' 
-        MATCH (l:Lemma) WHERE l.gbID = '{lemmaID}'
-        MATCH (s)-[:IS_SENSE_OF]->(x)-[:LEMMA]->(l)
-        RETURN s.gbID LIMIT 1
-    '''
-    records, _, _ = neo4jdriver.driver.execute_query(query)
-    senseID = records[0].data()['s.gbID']
-
-    query = f'''
-        MATCH (q:Quotation) WHERE q.hash = '{quotationHash}'
-        MATCH (s:Sense) WHERE s.gbID = '{senseID}'
-        MATCH (q)-[r:DESCRIBES]->(s)
-        RETURN r.binary
-    '''
-    records, _, _ = neo4jdriver.driver.execute_query(query)
-
-    for record in records:
-        print(record.data()['r.binary'])
-
-    query = f''''''
