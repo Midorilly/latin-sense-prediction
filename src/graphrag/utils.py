@@ -18,15 +18,6 @@ def cleanQuotation(quotation):
     quotationHash = getSentenceHash(quotation.strip())
     return quotationHash
 
-def getSentenceHash(sentence: str) -> str:
-    splitSentence = sentence.split(' ')
-    startJoin = ' '.join(splitSentence[:5]).encode('utf-8')
-    x = len(splitSentence)-5
-    endJoin = ' '.join(splitSentence[x:]).encode('utf-8')
-    sentenceHash = int(hashlib.md5(startJoin+endJoin).hexdigest(), 16)
-
-    return sentenceHash
-
 def cleanGloss(gloss):
     gloss = re.sub('[\"\'+]', '', gloss.lower())
     gloss = gloss.strip()
@@ -70,7 +61,7 @@ def add_lemma(lemma_path, results_path, output_path):
     
     output_file.close()
 
-def x(llm, output):
+def remove_not_annotated_senses(llm, output):
 
     senses = ['related to "christian virtue"', 'related to "virtue, personified as a deity"', 'a space marked out, an open place for observation',
                 'the military oath of allegiance', 'municipial official', 'an epithet of jupiter', 'consul']
@@ -88,6 +79,6 @@ def x(llm, output):
 if __name__ == '__main__':
 
     add_lemma('exps/llm-only/Llama-3.3-70B-Instruct.jsonl', 'exps/llm-only/Meta-Llama-3.1-8B-Instruct.jsonl', 'exps/llm-only/senses/Meta-Llama-3.1-8B-Instruct-senses.jsonl')
-    x('exps/llm-only/senses/Meta-Llama-3.1-8B-Instruct-senses.jsonl', 'exps/llm-only/senses/Meta-Llama-3.1-8B-Instruct.jsonl')
+    remove_not_annotated_senses('exps/llm-only/senses/Meta-Llama-3.1-8B-Instruct-senses.jsonl', 'exps/llm-only/senses/Meta-Llama-3.1-8B-Instruct.jsonl')
     #jsonl2csv('exps/sense-metadata/Llama-3.3-70B-Instruct.jsonl', 'exps/sense-metadata/Llama-3.3-70B-Instruct.csv', fieldnames=['lemma', 'sense', 'instruction', 'input', 'gold', 'system', 'prompt'])
     #add_lemma('exps/llm-only/Llama-3.3-70B-Instruct.jsonl', 'exps/llm-only/Meta-Llama-3.1-8B-Instruct.jsonl', 'exps/llm-only/Meta-Llama-3.1-8B-Instruct-new.jsonl')
