@@ -19,7 +19,7 @@ from compute_wsd_score import evaluate, evaluate_per_word
 
 import driver
 from graphrag import *
-from utils import *
+from utils import cleanGloss, cleanQuotation,
 from client import client_setup, query_client
 import client
 import re
@@ -72,11 +72,6 @@ def write_author_context(similar_quotations_ids, item, neo4jdriver):
 
     for id in similar_quotations_ids:
         similar_quotations_metadata_query = queries.author_metadata.format(id)      
-        #f'''
-        #    OPTIONAL MATCH (da)<-[:DATE]-(q:Quotation)-[:BELONGS_TO]->(d:Document)<-[:DEVELOPED]-(p:Person)-[:OCCUPATION]->(o:Occupation)
-        #    WHERE q.gbID = '{id}'
-        #    RETURN q.value, d.title, collect(da.description), p.fullname, collect(o.name)
-        #'''
         records, _, _ = neo4jdriver.driver.execute_query(similar_quotations_metadata_query)
 
         for record in records:
@@ -90,12 +85,6 @@ def write_author_context(similar_quotations_ids, item, neo4jdriver):
     return augmented_prompt
 
 def retrieve_top_k(k, quotation_hash, neo4jdriver):
-    #similarity_query = f'''
-    #    MATCH (q:Quotation) WHERE q.hash = '{quotation_hash}'
-    #    CALL db.index.vector.queryNodes('QUOTATION_INDEX', {k}, q._embedding)
-    #    YIELD node AS quotation, score
-    #    RETURN quotation.gbID AS gbID, score, q.gbID
-    #'''
     records, _, _ = neo4jdriver.driver.execute_query(queries.similarity_query.format(quotation_hash, k))
     quotation_id = records[0].data()['q.gbID']
     similar_quotations_ids = [record.data()['gbID'] for record in records if record.data()['gbID'] != quotation_id]
@@ -169,7 +158,6 @@ def run_sense_experiment(model_name, neo4jdriver):
             finally:
                 l['system'] = answer
                 l['prompt'] = augmented_prompt
-                #logger.info(colored(f'System: \'{answer}\' / Gold: \'{gold}\'', 'yellow'))
                 json.dump(l, exps)
                 exps.write('\n')
                 if answer == 'null':
@@ -187,7 +175,6 @@ def run_sense_experiment(model_name, neo4jdriver):
 def missing_evaluation(model_name, neo4jdriver):
 
     exps = open(os.path.join('exps', os.getenv(model_name)+'.jsonl'), 'r')
-    #log = deserialize(os.path.join('exps', os.getenv(model_name)+'-LOG.txt'))
     prompts = open(os.path.join('exps', os.getenv(model_name)+'-LOG.jsonl'), 'w+')
     for idx, line in enumerate(exps):
         l = json.loads(line)
@@ -210,7 +197,7 @@ if __name__ == '__main__':
     driver.load_environment()
     neo4jdriver = driver.init_driver()
     model_name = sys.argv[1]
-    #run_author_experiment(model_name, neo4jdriver)
+    run_author_experiment(model_name, neo4jdriver)
     run_sense_experiment(model_name, neo4jdriver)
     #missing_evaluation(model_name, neo4jdriver)
     #exps_file = os.path.join('exps', 'sense-metadata', os.getenv(model_name)+'.jsonl')
