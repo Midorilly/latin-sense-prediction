@@ -3,11 +3,7 @@ import os
 import dotenv
 import neo4j
 from langchain_openai import AzureOpenAIEmbeddings
-#import openai
 from termcolor import colored
-#from neo4j_graphrag.embeddings.openai import AzureOpenAIEmbeddings
-
-
 
 # setup logger config
 logger = logging.getLogger("neo4j_graphrag")
