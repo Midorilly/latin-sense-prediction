@@ -2,8 +2,6 @@ import logging
 import os
 import dotenv
 import neo4j
-#from langchain_openai import OpenAIEmbeddings
-#import openai
 from termcolor import colored
 
 # setup logger config
@@ -38,7 +36,6 @@ def init_driver():
     if driver.verify_connectivity():
         logger.info("Connection established.")
 
-    #embedder = OpenAIEmbeddings()
     schema = ""
 
     neo4jdriver = Neo4jDriver(URI, USERNAME, PASSWORD, AUTH, driver, 1536, schema)
