@@ -17,9 +17,9 @@ import time
 from openai import BadRequestError
 from compute_wsd_score import evaluate, evaluate_per_word
 
-import driver
+import src.utils.driver as driver
 from graphrag import *
-from utils import cleanGloss, cleanQuotation,
+from src.utils.utils import cleanGloss, cleanQuotation
 from client import client_setup, query_client
 import client
 import re

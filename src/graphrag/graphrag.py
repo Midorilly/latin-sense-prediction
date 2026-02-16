@@ -18,11 +18,11 @@ from neo4j_graphrag.schema import get_schema
 from neo4j_graphrag.types import Text2CypherSearchModel
 
 import index
-import driver
+import src.utils.driver as driver
 from client import client_setup, query_client
 import re
 import hashlib
-from utils import cleanGloss
+from src.utils.utils import cleanGloss
 
 # setup logger config
 logger = logging.getLogger("neo4j_graphrag")

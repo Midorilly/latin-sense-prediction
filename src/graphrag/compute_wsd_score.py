@@ -7,9 +7,9 @@ import logging
 from termcolor import colored
 import matplotlib.pyplot as plt
 import numpy as np
-import driver
+import src.utils.driver as driver
 import pandas as pd
-from utils import jsonl2csv
+from src.utils.utils import jsonl2csv
 
 # setup logger config
 logger = logging.getLogger("latin-mt")

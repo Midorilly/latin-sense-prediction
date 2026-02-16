@@ -1,7 +1,7 @@
-from driver import *
+import src.utils.driver as driver
 
-load_environment()
-neo4jdriver = init_driver()
+driver.load_environment()
+neo4jdriver = driver.init_driver()
 
 def createSchemaNodes():
 

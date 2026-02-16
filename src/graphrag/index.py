@@ -7,7 +7,7 @@ from langchain_openai import AzureOpenAIEmbeddings
 from neo4j_graphrag.indexes import create_vector_index, upsert_vectors, drop_index_if_exists
 from random import random
 from langchain_community.vectorstores import Neo4jVector
-import driver
+import src.utils.driver as driver
 import time
 from openai import RateLimitError
 

@@ -1,4 +1,4 @@
-from rdflib import Namespace, Graph
+from rdflib import Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD, DCTERMS
 
 LILA = Namespace("http://lila-erc.eu/ontologies/lila/")

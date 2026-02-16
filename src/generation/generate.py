@@ -7,7 +7,7 @@ import relations
 import nodes
 import importlib
 import schema
-import driver
+#import src.utils.driver
 from namespaces import *
 from rdflib import Graph
 import src.utils.utils as utils

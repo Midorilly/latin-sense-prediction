@@ -12,7 +12,7 @@ import logging
 from SPARQLWrapper import SPARQLExceptions
 import hashlib
 import src.utils.utils as utils
-from driver import *
+import src.utils.driver as driver
 from namespaces import LILA, LEXINFO, SKOS08, LVONT
 from relations import *
 import queries
@@ -20,8 +20,8 @@ import queries
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-load_environment()
-neo4jdriver = init_driver()
+driver.load_environment()
+neo4jdriver = driver.init_driver()
 
 lilaPosMapping = {'N' : LILA.noun, 'ADJ' : LILA.adjective, 'V' : LILA.verb}
 lexinfoPosMapping = {'N' : LEXINFO.noun , 'ADJ' : LEXINFO.adjective, 'V' : LEXINFO.verb}

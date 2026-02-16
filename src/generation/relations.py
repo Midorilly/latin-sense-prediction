@@ -3,7 +3,7 @@ import urllib.error
 import logging
 from SPARQLWrapper import SPARQLExceptions
 import src.utils.utils as utils
-from driver import *
+import src.utils.driver as driver
 import nltk
 nltk.download('wordnet')
 nltk.download('wordnet31')
@@ -15,8 +15,8 @@ import re
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-load_environment()
-neo4jdriver = init_driver()
+driver.load_environment()
+neo4jdriver = driver.init_driver()
 
 def addLemmaRelation(subjID, objID):
 

@@ -25,7 +25,7 @@ class Neo4jDriver:
         self.driver.execute_query(query)
 
 def load_environment():
-    load_status = dotenv.load_dotenv("env-rag/graphrag.env")
+    load_status = dotenv.load_dotenv(".env/graphrag.env")
     if load_status is False:
         raise RuntimeError('Environment variables not loaded.')
 
