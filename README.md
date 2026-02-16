@@ -1,1 +1,1 @@
-# Linguistic Knowledge Graphs for Sense Prediction: a case-study on Latin
+# *Linguistic Knowledge Graphs for Sense Prediction: a case-study on Latin* @ LREC 2026
