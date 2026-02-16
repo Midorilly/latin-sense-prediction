@@ -11,7 +11,7 @@ import re
 import logging
 from SPARQLWrapper import SPARQLExceptions
 import hashlib
-from utils import *
+import src.utils.utils as utils
 from driver import *
 from namespaces import LILA, LEXINFO, SKOS08, LVONT
 from relations import *
@@ -181,7 +181,7 @@ def addQuotationNode(quotation: str, language: str, id, start=None, end=None):
     quotation = re.sub('(?:\[target\]|\[/target\]|target|</line>|<line>|</section>|<section>|</p>|<p>|</book>|<book>)', '', quotation)    #quotation = re.sub('"', '', quotation)
     quotation = re.sub(' +', ' ', quotation)
     strippedQuotation = quotation.strip()
-    quotationHash = getSentenceHash(strippedQuotation)
+    quotationHash = utils.getSentenceHash(strippedQuotation)
     #quotation = re.sub('\'', '', quotation)
 
     query = f'''
@@ -233,7 +233,7 @@ def addLanguageNode(language, l: Graph):
 def addTimeIntervalNode(name, description, id):
 
     name = name.split(' ')
-    century = roman(name[1])
+    century = utils.roman(name[1])
     name = century + '_' + name[2]
     
     query = f'''
@@ -245,8 +245,8 @@ def addTimeIntervalNode(name, description, id):
 def addTimePointNode(pointsDict):
 
     for year, ids in pointsDict.items():
-        date, period = convertDate(year)
-        name = roman(date)+'_'+period
+        date, period = utils.convertDate(year)
+        name = utils.roman(date)+'_'+period
         description = date+'_'+period
 
         query = f'''

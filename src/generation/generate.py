@@ -10,7 +10,7 @@ import schema
 import driver
 from namespaces import *
 from rdflib import Graph
-from utils import *
+import src.utils.utils as utils
 
 
 from urllib.parse import quote

@@ -2,7 +2,7 @@
 import urllib.error
 import logging
 from SPARQLWrapper import SPARQLExceptions
-import utils
+import src.utils.utils as utils
 from driver import *
 import nltk
 nltk.download('wordnet')

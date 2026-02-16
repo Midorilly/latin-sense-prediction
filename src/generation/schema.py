@@ -1,4 +1,3 @@
-from utils import *
 from driver import *
 
 load_environment()
