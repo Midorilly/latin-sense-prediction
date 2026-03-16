@@ -1,3 +1,9 @@
+author_metadata_limit_1 = '''
+        OPTIONAL MATCH (da)<-[:DATE]-(q:Quotation)-[:BELONGS_TO]->(d:Document)<-[:DEVELOPED]-(p:Person)-[:OCCUPATION]->(o:Occupation)
+        WHERE q.gbID = '{}'
+        RETURN q.value, d.title, collect(da.description), p.fullname, collect(o.name) LIMIT 1
+    '''
+
 author_metadata = '''
         OPTIONAL MATCH (da)<-[:DATE]-(q:Quotation)-[:BELONGS_TO]->(d:Document)<-[:DEVELOPED]-(p:Person)-[:OCCUPATION]->(o:Occupation)
         WHERE q.gbID = '{}'
